@@ -6,15 +6,11 @@ package org.jetbrains.kotlin.shortenRefs
 
 import com.intellij.openapi.application.ApplicationManager
 import org.jetbrains.kotlin.AbstractImportsTest
-import org.jetbrains.kotlin.idea.FIR_COMPARISON
-import org.jetbrains.kotlin.idea.FIR_IGNORE
 import org.jetbrains.kotlin.idea.frontend.api.analyze
-import org.jetbrains.kotlin.idea.runTestWithCustomEnableDirective
 import org.jetbrains.kotlin.idea.util.application.executeWriteCommand
 import org.jetbrains.kotlin.idea.util.application.runReadAction
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.test.InTextDirectivesUtils
-import java.io.File
+import org.jetbrains.kotlin.test.uitls.IgnoreTests
 
 abstract class AbstractFirShortenRefsTest : AbstractImportsTest() {
     override val captureExceptions: Boolean = false
@@ -44,10 +40,9 @@ abstract class AbstractFirShortenRefsTest : AbstractImportsTest() {
     override val runTestInWriteCommand: Boolean = false
 
     protected fun doTestWithMuting(unused: String) {
-        val testedFile = File(testPath())
-        if (InTextDirectivesUtils.isDirectiveDefined(testedFile.readText(), FIR_IGNORE)) return
-
-        runTestWithCustomEnableDirective(FIR_COMPARISON, testedFile) { doTest(unused) }
+        IgnoreTests.runTestIfEnabledByFileDirective(testDataFile().toPath(), IgnoreTests.DIRECTIVES.FIR_COMPARISON, ".after") {
+            doTest(unused)
+        }
     }
 
     override val nameCountToUseStarImportDefault: Int
