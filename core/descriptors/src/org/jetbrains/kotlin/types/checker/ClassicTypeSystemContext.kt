@@ -485,8 +485,8 @@ interface ClassicTypeSystemContext : TypeSystemInferenceExtensionContext, TypeSy
     }
 
     override fun prepareType(type: KotlinTypeMarker): KotlinTypeMarker {
-        require(type is UnwrappedType, type::errorMessage)
-        return NewKotlinTypeChecker.Default.transformToNewType(type)
+        require(type is KotlinType, type::errorMessage)
+        return NewKotlinTypeChecker.Default.transformToNewType(type.unwrap())
     }
 
     override fun DefinitelyNotNullTypeMarker.original(): SimpleTypeMarker {

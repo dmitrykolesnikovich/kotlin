@@ -985,7 +985,8 @@ public class OverridingUtil {
                     /* errorTypesEqualsToAnything = */ true,
                     /* stubTypesEqualsToAnything = */ true,
                     /* allowedTypeVariable = */ true,
-                    kotlinTypeRefiner
+                    kotlinTypeRefiner,
+                    SimpleClassicTypeSystemContext.INSTANCE
             );
             this.matchingTypeConstructors = matchingTypeConstructors;
         }

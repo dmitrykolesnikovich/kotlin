@@ -97,8 +97,8 @@ interface ConeInferenceContext : TypeSystemInferenceExtensionContext, ConeTypeCo
     override fun newBaseTypeCheckerContext(
         errorTypesEqualToAnything: Boolean,
         stubTypesEqualToAnything: Boolean
-    ): AbstractTypeCheckerContext =
-        ConeTypeCheckerContext(errorTypesEqualToAnything, stubTypesEqualToAnything, session)
+    ): ConeTypeCheckerContext =
+        ConeTypeCheckerContext(errorTypesEqualToAnything, stubTypesEqualToAnything, this)
 
     override fun KotlinTypeMarker.canHaveUndefinedNullability(): Boolean {
         require(this is ConeKotlinType)

@@ -18,8 +18,8 @@ import org.jetbrains.kotlin.fir.types.ConeTypeCheckerContext
 val FirSession.typeContext: ConeInferenceContext
     get() = inferenceComponents.ctx
 
-val FirSession.typeCheckerContext: ConeTypeCheckerContext
-    get() = inferenceComponents.ctx
+//val FirSession.typeCheckerContext: ConeTypeCheckerContext
+//    get() = inferenceComponents.ctx
 
 /**
  * Returns the list of functions that overridden by given

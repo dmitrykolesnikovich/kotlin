@@ -11,10 +11,22 @@ import org.jetbrains.kotlin.fir.types.ConeTypeCheckerContext
 import org.jetbrains.kotlin.resolve.calls.inference.components.*
 import org.jetbrains.kotlin.resolve.calls.inference.model.NewConstraintSystemImpl
 import org.jetbrains.kotlin.types.AbstractTypeApproximator
+import org.jetbrains.kotlin.types.model.KotlinTypeMarker
 
 @NoMutableState
 class InferenceComponents(val session: FirSession) : FirSessionComponent {
-    val ctx: ConeTypeCheckerContext = ConeTypeCheckerContext(isErrorTypeEqualsToAnything = false, isStubTypeEqualsToAnything = true, session)
+    val ctx: ConeInferenceContext = object : ConeInferenceContext {
+        override fun createTypeWithAlternativeForIntersectionResult(
+            firstCandidate: KotlinTypeMarker,
+            secondCandidate: KotlinTypeMarker
+        ): KotlinTypeMarker {
+            // TODO
+            return firstCandidate
+        }
+
+        override val session: FirSession
+            get() = this@InferenceComponents.session
+    }
 
     val approximator: AbstractTypeApproximator = object : AbstractTypeApproximator(ctx) {}
     val trivialConstraintTypeInferenceOracle = TrivialConstraintTypeInferenceOracle.create(ctx)
