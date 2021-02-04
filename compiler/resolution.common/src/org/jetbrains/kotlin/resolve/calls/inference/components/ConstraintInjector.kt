@@ -198,10 +198,6 @@ class ConstraintInjector(
             return baseContext.substitutionSupertypePolicy(type)
         }
 
-        override fun areEqualTypeConstructors(c1: TypeConstructorMarker, c2: TypeConstructorMarker): Boolean {
-            return baseContext.areEqualTypeConstructors(c1, c2)
-        }
-
         override fun refineType(type: KotlinTypeMarker): KotlinTypeMarker {
             return with(constraintIncorporator.utilContext) {
                 type.refineType()

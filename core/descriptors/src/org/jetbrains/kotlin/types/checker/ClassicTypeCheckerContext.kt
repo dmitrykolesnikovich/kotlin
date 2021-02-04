@@ -16,7 +16,6 @@
 
 package org.jetbrains.kotlin.types.checker
 
-import org.jetbrains.kotlin.resolve.constants.IntegerLiteralTypeConstructor
 import org.jetbrains.kotlin.types.*
 import org.jetbrains.kotlin.types.model.KotlinTypeMarker
 import org.jetbrains.kotlin.types.model.SimpleTypeMarker
@@ -42,23 +41,6 @@ open class ClassicTypeCheckerContext(
 
     override val isStubTypeEqualsToAnything: Boolean
         get() = stubTypeEqualsToAnything
-
-    override fun areEqualTypeConstructors(c1: TypeConstructorMarker, c2: TypeConstructorMarker): Boolean {
-        require(c1 is TypeConstructor, c1::errorMessage)
-        require(c2 is TypeConstructor, c2::errorMessage)
-        return areEqualTypeConstructors(c1, c2)
-    }
-
-    open fun areEqualTypeConstructors(a: TypeConstructor, b: TypeConstructor): Boolean = when {
-        /*
-         * For integer literal types we have special rules for constructor's equality,
-         *   so we have to check it manually
-         * For example: Int in ILT.possibleTypes -> ILT == Int
-         */
-        a is IntegerLiteralTypeConstructor -> a.checkConstructor(b)
-        b is IntegerLiteralTypeConstructor -> b.checkConstructor(a)
-        else -> typeSystemContext.areEqualTypeConstructors(a, b)
-    }
 
     override fun substitutionSupertypePolicy(type: SimpleTypeMarker): SupertypesPolicy.DoCustomTransform {
         return typeSystemContext.classicSubstitutionSupertypePolicy(type)

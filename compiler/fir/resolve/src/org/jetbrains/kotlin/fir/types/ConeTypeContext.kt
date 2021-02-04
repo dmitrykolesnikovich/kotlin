@@ -574,10 +574,6 @@ class ConeTypeCheckerContext(
         }
     }
 
-    override fun areEqualTypeConstructors(c1: TypeConstructorMarker, c2: TypeConstructorMarker): Boolean {
-        return c1 == c2
-    }
-
     override fun refineType(type: KotlinTypeMarker): KotlinTypeMarker {
         return typeSystemContext.prepareType(type)
     }

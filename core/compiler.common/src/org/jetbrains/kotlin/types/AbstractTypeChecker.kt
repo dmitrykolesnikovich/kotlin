@@ -31,8 +31,6 @@ abstract class AbstractTypeCheckerContext() {
 
     protected var argumentsDepth = 0
 
-    abstract fun areEqualTypeConstructors(c1: TypeConstructorMarker, c2: TypeConstructorMarker): Boolean
-
     internal inline fun <T> runWithArgumentsSettings(subArgument: KotlinTypeMarker, f: AbstractTypeCheckerContext.() -> T): T {
         if (argumentsDepth > 100) {
             error("Arguments depth is too high. Some related argument: $subArgument")
@@ -214,7 +212,7 @@ object AbstractTypeChecker {
                 val refinedA = context.refineType(a)
                 val refinedB = context.refineType(b)
                 val simpleA = refinedA.lowerBoundIfFlexible()
-                if (!context.areEqualTypeConstructors(refinedA.typeConstructor(), refinedB.typeConstructor())) return false
+                if (!areEqualTypeConstructors(refinedA.typeConstructor(), refinedB.typeConstructor())) return false
                 if (simpleA.argumentsCount() == 0) {
                     if (refinedA.hasFlexibleNullability() || refinedB.hasFlexibleNullability()) return true
 
@@ -322,7 +320,7 @@ object AbstractTypeChecker {
 
         val superConstructor = superType.typeConstructor()
 
-        if (context.areEqualTypeConstructors(subType.typeConstructor(), superConstructor) && superConstructor.parametersCount() == 0) return true
+        if (areEqualTypeConstructors(subType.typeConstructor(), superConstructor) && superConstructor.parametersCount() == 0) return true
         if (superType.typeConstructor().isAnyConstructor()) return true
 
         val supertypesWithSameConstructor = findCorrespondingSupertypes(context, subType, superConstructor)
@@ -465,7 +463,7 @@ object AbstractTypeChecker {
         if (!superConstructor.isClassTypeConstructor() && subType.isClassType()) return emptyList()
 
         if (superConstructor.isCommonFinalClassConstructor()) {
-            return if (context.areEqualTypeConstructors(subType.typeConstructor(), superConstructor))
+            return if (areEqualTypeConstructors(subType.typeConstructor(), superConstructor))
                 listOf(captureFromArguments(subType, CaptureStatus.FOR_SUBTYPING) ?: subType)
             else
                 emptyList()
@@ -478,7 +476,7 @@ object AbstractTypeChecker {
             val current = captureFromArguments(it, CaptureStatus.FOR_SUBTYPING) ?: it
 
             when {
-                context.areEqualTypeConstructors(current.typeConstructor(), superConstructor) -> {
+                areEqualTypeConstructors(current.typeConstructor(), superConstructor) -> {
                     result.add(current)
                     SupertypesPolicy.None
                 }
@@ -657,7 +655,7 @@ object AbstractNullabilityChecker {
 
             if (context.isStubTypeEqualsToAnything && type.isStubType()) return true
 
-            return context.areEqualTypeConstructors(type.typeConstructor(), end)
+            return areEqualTypeConstructors(type.typeConstructor(), end)
         }
 }
 

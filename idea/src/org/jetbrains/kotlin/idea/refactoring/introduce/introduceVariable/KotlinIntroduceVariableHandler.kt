@@ -84,10 +84,7 @@ object KotlinIntroduceVariableHandler : RefactoringActionHandler {
             }
         }
 
-        private inner class ContextImpl : ClassicTypeCheckerContext(false, typeSystemContext = TypeSystemContextImpl()) {
-            override fun areEqualTypeConstructors(a: TypeConstructor, b: TypeConstructor): Boolean =
-                compareDescriptors(project, a.declarationDescriptor, b.declarationDescriptor)
-        }
+        private inner class ContextImpl : ClassicTypeCheckerContext(false, typeSystemContext = TypeSystemContextImpl())
 
         override fun equalTypes(a: KotlinType, b: KotlinType): Boolean = with(NewKotlinTypeChecker.Default) {
             ContextImpl().equalTypes(a.unwrap(), b.unwrap())

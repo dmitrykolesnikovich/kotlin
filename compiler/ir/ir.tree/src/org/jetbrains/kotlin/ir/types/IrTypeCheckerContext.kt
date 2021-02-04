@@ -32,8 +32,4 @@ open class IrTypeCheckerContext(override val typeSystemContext: IrTypeSystemCont
 
     override val KotlinTypeMarker.isAllowedTypeVariable: Boolean
         get() = false
-
-    override fun areEqualTypeConstructors(c1: TypeConstructorMarker, c2: TypeConstructorMarker): Boolean {
-        return typeSystemContext.areEqualTypeConstructors(c1, c2)
-    }
 }
