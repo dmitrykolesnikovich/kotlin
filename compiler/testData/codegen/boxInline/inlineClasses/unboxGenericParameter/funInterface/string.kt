@@ -1,3 +1,4 @@
+// IGNORE_BACKEND_FIR: JVM_IR
 // NO_CHECK_LAMBDA_INLINING
 // !LANGUAGE: +InlineClasses
 // FILE: inline.kt
