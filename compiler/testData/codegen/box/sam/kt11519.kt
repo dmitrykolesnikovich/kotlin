@@ -1,6 +1,8 @@
 // DONT_TARGET_EXACT_BACKEND: JS JS_IR JS_IR_ES6 WASM NATIVE
 // IGNORE_BACKEND_FIR: JVM_IR
 // SKIP_JDK6
+// SAM_CONVERSIONS: CLASS
+//   ^ test checks reflection for synthetic classes
 // MODULE: lib
 // FILE: Custom.java
 

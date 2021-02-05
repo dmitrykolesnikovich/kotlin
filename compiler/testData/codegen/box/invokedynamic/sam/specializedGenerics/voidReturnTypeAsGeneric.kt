@@ -1,6 +1,7 @@
+// IGNORE_BACKEND_FIR: JVM_IR
 // TARGET_BACKEND: JVM
 // JVM_TARGET: 1.8
-// LAMBDAS: INDY
+// SAM_CONVERSIONS: INDY
 
 fun interface IFoo<T> {
     fun foo(): T
