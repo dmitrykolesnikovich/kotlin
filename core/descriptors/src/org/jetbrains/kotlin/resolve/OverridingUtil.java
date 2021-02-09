@@ -404,7 +404,7 @@ public class OverridingUtil {
             @NotNull List<TypeParameterDescriptor> secondParameters
     ) {
         if (firstParameters.isEmpty()) {
-            return (ClassicTypeCheckerContext) new OverridingUtilTypeSystemContext(null, equalityAxioms)
+            return (ClassicTypeCheckerContext) new OverridingUtilTypeSystemContext(null, equalityAxioms, kotlinTypeRefiner)
                     .newBaseTypeCheckerContext(true, true);
         }
 
@@ -413,7 +413,7 @@ public class OverridingUtil {
             matchingTypeConstructors.put(firstParameters.get(i).getTypeConstructor(), secondParameters.get(i).getTypeConstructor());
         }
 
-        return (ClassicTypeCheckerContext) new OverridingUtilTypeSystemContext(matchingTypeConstructors, equalityAxioms)
+        return (ClassicTypeCheckerContext) new OverridingUtilTypeSystemContext(matchingTypeConstructors, equalityAxioms, kotlinTypeRefiner)
                 .newBaseTypeCheckerContext(true, true);
     }
 
