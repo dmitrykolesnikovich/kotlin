@@ -57,10 +57,6 @@ open class CInteropExtension(internal val project: Project) {
             konanTarget = konanTarget
         )
 
-        listOf("").onEach {
-
-        }
-
         settings.action()
 
         val buildCInteropTask = project.tasks.register(buildCInteropTaskName, CInteropProcess::class.java) {
