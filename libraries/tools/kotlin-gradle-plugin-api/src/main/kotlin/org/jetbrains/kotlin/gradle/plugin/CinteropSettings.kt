@@ -21,9 +21,6 @@ interface CInteropSettings : Named {
         fun headerFilterOnly(includeDirs: Collection<Any>)
     }
 
-    // TODO: Provide an interface for native compilations.
-    val compilation: KotlinCompilation<KotlinCommonOptions>
-
     val dependencyConfigurationName: String
     var dependencyFiles: FileCollection
 

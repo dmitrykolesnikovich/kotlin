@@ -13,7 +13,7 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.jetbrains.kotlin.commonizer.api.CommonizerTarget
 import org.jetbrains.kotlin.commonizer.api.SharedCommonizerTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.ib.getCommonizerTarget
+import org.jetbrains.kotlin.gradle.cinterop.getCommonizerTarget
 import org.jetbrains.kotlin.konan.target.KonanTarget.*
 import kotlin.test.BeforeTest
 import kotlin.test.Test

@@ -19,8 +19,8 @@ import org.jetbrains.kotlin.commonizer.api.identityString
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import org.jetbrains.kotlin.gradle.dsl.multiplatformExtension
-import org.jetbrains.kotlin.gradle.ib.COMMONIZER_TARGET_ATTRIBUTE
-import org.jetbrains.kotlin.gradle.ib.getCommonizerTarget
+import org.jetbrains.kotlin.gradle.cinterop.COMMONIZER_TARGET_ATTRIBUTE
+import org.jetbrains.kotlin.gradle.cinterop.getCommonizerTarget
 import org.jetbrains.kotlin.gradle.plugin.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.CompilationSourceSetUtil.compilationsBySourceSets

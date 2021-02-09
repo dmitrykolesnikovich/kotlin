@@ -8,8 +8,8 @@
 package org.jetbrains.kotlin.gradle
 
 import org.gradle.testfixtures.ProjectBuilder
-import org.jetbrains.kotlin.gradle.ib.CreateInteropBundleTask
-import org.jetbrains.kotlin.gradle.ib.InteropBundleDirectory
+import org.jetbrains.kotlin.gradle.cinterop.CreateInteropBundleTask
+import org.jetbrains.kotlin.gradle.cinterop.InteropBundleDirectory
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream

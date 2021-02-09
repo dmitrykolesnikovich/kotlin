@@ -3,18 +3,15 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.gradle.ib
+package org.jetbrains.kotlin.gradle.cinterop
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
-import org.jetbrains.kotlin.gradle.ib.InteropBundlePlugin.Companion.konanTargets
-import org.jetbrains.kotlin.gradle.utils.`is`
+import org.jetbrains.kotlin.gradle.cinterop.CInteropPlugin.Companion.konanTargets
 import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.File
-import kotlin.system.exitProcess
 
 abstract class CreateInteropBundleTask : DefaultTask() {
 

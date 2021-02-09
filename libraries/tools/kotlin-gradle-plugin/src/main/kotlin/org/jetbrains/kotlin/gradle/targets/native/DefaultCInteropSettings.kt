@@ -16,14 +16,34 @@ import org.gradle.util.ConfigureUtil
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings
 import org.jetbrains.kotlin.gradle.plugin.CInteropSettings.IncludeDirectories
 import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
+import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.io.File
 import javax.inject.Inject
 
 open class DefaultCInteropSettings @Inject constructor(
     private val project: Project,
     private val name: String,
-    override val compilation: KotlinNativeCompilation
+    override val dependencyConfigurationName: String,
+    val interopProcessingTaskName: String,
+    val konanTarget: KonanTarget
 ) : CInteropSettings {
+
+    constructor(
+        project: Project,
+        name: String,
+        compilation: KotlinNativeCompilation
+    ) : this(
+        project = project,
+        name = name,
+        dependencyConfigurationName = compilation.disambiguateName("${name.capitalize()}CInterop"),
+        interopProcessingTaskName = lowerCamelCaseName(
+            "cinterop",
+            compilation.compilationName.takeIf { it != "main" }.orEmpty(),
+            name,
+            compilation.target.disambiguationClassifier
+        ),
+        konanTarget = compilation.konanTarget
+    )
 
     inner class DefaultIncludeDirectories : CInteropSettings.IncludeDirectories {
         var allHeadersDirs: FileCollection = project.files()
@@ -42,21 +62,7 @@ open class DefaultCInteropSettings @Inject constructor(
 
     override fun getName(): String = name
 
-    val target: KotlinNativeTarget
-        get() = compilation.target
-
-    override val dependencyConfigurationName: String
-        get() = compilation.disambiguateName("${name.capitalize()}CInterop")
-
     override var dependencyFiles: FileCollection = project.files()
-
-    val interopProcessingTaskName: String
-        get() = lowerCamelCaseName(
-            "cinterop",
-            compilation.compilationName.takeIf { it != "main" }.orEmpty(),
-            name,
-            target.disambiguationClassifier
-        )
 
     val defFileProperty: Property<File> = project.objects.property(File::class.java)
         .apply { set(project.projectDir.resolve("src/nativeInterop/cinterop/$name.def")) }

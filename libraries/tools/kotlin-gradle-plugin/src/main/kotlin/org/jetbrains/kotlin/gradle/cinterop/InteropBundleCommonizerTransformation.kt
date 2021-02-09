@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.gradle.ib
+package org.jetbrains.kotlin.gradle.cinterop
 
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
@@ -16,7 +16,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.jetbrains.kotlin.commonizer.api.CliCommonizer
 import org.jetbrains.kotlin.commonizer.api.SharedCommonizerTarget
-import org.jetbrains.kotlin.gradle.ib.InteropBundleCommonizerTransformation.Parameters
+import org.jetbrains.kotlin.gradle.cinterop.InteropBundleCommonizerTransformation.Parameters
 import java.io.File
 import java.io.Serializable
 

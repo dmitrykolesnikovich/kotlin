@@ -20,6 +20,7 @@ import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation.Companion.MAIN_COMPILATION_NAME
@@ -116,8 +117,9 @@ open class KotlinNativeTargetConfigurator<T : KotlinNativeTarget>(
 
     private fun Project.createCInteropKlibArtifact(
         interop: DefaultCInteropSettings,
-        interopTask: TaskProvider<out CInteropProcess>
-    ) = createKlibArtifact(interop.compilation, interopTask.map { it.outputFile }, "cinterop-${interop.name}", interopTask, copy = true)
+        interopTask: TaskProvider<out CInteropProcess>,
+        compilation: KotlinNativeCompilation
+    ) = createKlibArtifact(compilation, interopTask.map { it.outputFile }, "cinterop-${interop.name}", interopTask, copy = true)
     // endregion.
 
     // region Task creation.
@@ -204,6 +206,12 @@ open class KotlinNativeTargetConfigurator<T : KotlinNativeTarget>(
                         "for compilation '${compilation.name}'" +
                         "of target '${it.konanTarget.name}'."
                 it.enabled = compilation.konanTarget.enabledOnCurrentHost
+                it.baseKlibName = run {
+                    val compilationPrefix = compilation.let {
+                        if (it.isMain()) project.name else it.name
+                    }
+                    "$compilationPrefix-cinterop-${it.settings.name}"
+                }
             }
 
             val interopOutput = project.files(interopTask.map { it.outputFileProvider })
@@ -214,7 +222,7 @@ open class KotlinNativeTargetConfigurator<T : KotlinNativeTarget>(
                     // Register the interop library as an outgoing klib to allow depending on projects with cinterops.
                     project.dependencies.add(target.apiElementsConfigurationName, interopOutput)
                     // Add the interop library in publication.
-                    createCInteropKlibArtifact(interop, interopTask)
+                    createCInteropKlibArtifact(interop, interopTask, compilation)
                     // We cannot add the interop library in an compilation output because in this case
                     // IDE doesn't see this library in module dependencies. So we have to manually add
                     // main interop libraries in dependencies of the default test compilation.

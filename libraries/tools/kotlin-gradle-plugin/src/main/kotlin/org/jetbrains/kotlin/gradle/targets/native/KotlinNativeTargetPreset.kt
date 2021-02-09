@@ -8,12 +8,10 @@
 
 package org.jetbrains.kotlin.gradle.plugin.mpp
 
-import org.gradle.BuildAdapter
 import org.gradle.api.Project
-import org.gradle.api.invocation.Gradle
 import org.jetbrains.kotlin.compilerRunner.konanHome
 import org.jetbrains.kotlin.compilerRunner.konanVersion
-import org.jetbrains.kotlin.gradle.ib.setupInteropBundleTransformationIfEnabled
+import org.jetbrains.kotlin.gradle.cinterop.setupInteropBundleTransformationIfEnabled
 import org.jetbrains.kotlin.gradle.plugin.*
 import org.jetbrains.kotlin.gradle.plugin.PropertiesProvider
 import org.jetbrains.kotlin.gradle.targets.native.DisabledNativeTargetsReporter
@@ -22,7 +20,6 @@ import org.jetbrains.kotlin.gradle.targets.native.internal.PlatformLibrariesGene
 import org.jetbrains.kotlin.gradle.targets.native.internal.setUpKotlinNativePlatformDependencies
 import org.jetbrains.kotlin.gradle.utils.NativeCompilerDownloader
 import org.jetbrains.kotlin.gradle.utils.SingleActionPerProject
-import org.jetbrains.kotlin.gradle.utils.isConfigurationCacheAvailable
 import org.jetbrains.kotlin.konan.CompilerVersion
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.KonanTarget

@@ -53,5 +53,15 @@ sealed class KonanTarget(override val name: String, val family: Family, val arch
                 WASM32
             ).associateBy { it.name }
         }
+
+        fun fromNameOrNull(name: String): KonanTarget? {
+            return predefinedTargets[name]
+        }
+
+        fun fromNameOrThrow(name: String): KonanTarget {
+            return fromNameOrNull(name) ?: throw IllegalArgumentException(
+                "Unknown KonanTarget: $name. Predefined targets: ${predefinedTargets.keys.joinToString(", ")}"
+            )
+        }
     }
 }

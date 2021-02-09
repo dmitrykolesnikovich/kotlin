@@ -3,7 +3,7 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package org.jetbrains.kotlin.gradle.ib
+package org.jetbrains.kotlin.gradle.cinterop
 
 import org.gradle.api.Project
 import org.jetbrains.kotlin.commonizer.api.CommonizerTarget

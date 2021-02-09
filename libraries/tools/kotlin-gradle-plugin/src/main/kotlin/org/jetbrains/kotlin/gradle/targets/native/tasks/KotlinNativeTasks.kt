@@ -930,18 +930,10 @@ open class CInteropProcess : DefaultTask() {
     lateinit var destinationDir: Provider<File>
 
     val konanTarget: KonanTarget
-        @Internal get() = settings.compilation.konanTarget
+        @Internal get() = settings.konanTarget
 
-    val interopName: String
-        @Internal get() = settings.name
-
-    val baseKlibName: String
-        @Internal get() {
-            val compilationPrefix = settings.compilation.let {
-                if (it.isMain()) project.name else it.name
-            }
-            return "$compilationPrefix-cinterop-$interopName"
-        }
+    @Internal
+    lateinit var baseKlibName: String
 
     val outputFileName: String
         @Internal get() = with(CompilerOutputKind.LIBRARY) {
