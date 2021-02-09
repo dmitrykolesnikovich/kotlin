@@ -345,7 +345,7 @@ interface ClassicTypeSystemContext : TypeSystemInferenceExtensionContext, TypeSy
         errorTypesEqualToAnything: Boolean,
         stubTypesEqualToAnything: Boolean
     ): AbstractTypeCheckerContext {
-        return ClassicTypeCheckerContext(errorTypesEqualToAnything, stubTypesEqualToAnything)
+        return ClassicTypeCheckerContext(errorTypesEqualToAnything, stubTypesEqualToAnything, typeSystemContext = this)
     }
 
     override fun nullableNothingType(): SimpleTypeMarker {
