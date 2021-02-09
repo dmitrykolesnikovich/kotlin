@@ -64,20 +64,14 @@ internal class KtFirReferenceShortener(
         resolveFileToBodyResolve(file)
         val firFile = file.getOrBuildFirOfType<FirFile>(firResolveState)
 
-        val namesToImport = mutableListOf<FqName>()
-
-        val typesToShorten = mutableListOf<KtUserType>()
-        val qualifiersToShorten = mutableListOf<KtDotQualifiedExpression>()
-
-        firFile.acceptChildren(TypesCollectingVisitor(namesToImport, typesToShorten))
-        firFile.acceptChildren(TypeQualifiersCollectingVisitor(namesToImport, qualifiersToShorten))
-        firFile.acceptChildren(CallsCollectingVisitor(namesToImport, qualifiersToShorten))
+        val collector = ElementsToShortenCollector()
+        firFile.acceptChildren(collector)
 
         return ShortenCommandImpl(
             file,
-            namesToImport.distinct(),
-            typesToShorten.distinct().map { it.createSmartPointer() },
-            qualifiersToShorten.distinct().map { it.createSmartPointer() }
+            collector.namesToImport.distinct(),
+            collector.typesToShorten.distinct().map { it.createSmartPointer() },
+            collector.qualifiersToShorten.distinct().map { it.createSmartPointer() }
         )
     }
 
@@ -165,10 +159,11 @@ internal class KtFirReferenceShortener(
         }
     }
 
-    private inner class TypesCollectingVisitor(
-        private val namesToImport: MutableList<FqName>,
-        private val typesToShorten: MutableList<KtUserType>,
-    ) : FirVisitorVoid() {
+    private inner class ElementsToShortenCollector : FirVisitorVoid() {
+        val namesToImport: MutableList<FqName> = mutableListOf()
+        val typesToShorten: MutableList<KtUserType> = mutableListOf()
+        val qualifiersToShorten: MutableList<KtDotQualifiedExpression> = mutableListOf()
+
         override fun visitElement(element: FirElement) {
             element.acceptChildren(this)
         }
@@ -241,15 +236,6 @@ internal class KtFirReferenceShortener(
             namesToImport.add(classFqName)
             typesToShorten.add(mostTopLevelTypeElement)
         }
-    }
-
-    private inner class TypeQualifiersCollectingVisitor(
-        private val namesToImport: MutableList<FqName>,
-        private val qualifiersToShorten: MutableList<KtDotQualifiedExpression>
-    ) : FirVisitorVoid() {
-        override fun visitElement(element: FirElement) {
-            element.acceptChildren(this)
-        }
 
         override fun visitResolvedQualifier(resolvedQualifier: FirResolvedQualifier) {
             super.visitResolvedQualifier(resolvedQualifier)
@@ -291,31 +277,6 @@ internal class KtFirReferenceShortener(
             } else {
                 addFakePackagePrefixToShortenIfPresent(mostTopLevelQualifier)
             }
-        }
-
-        private fun addFakePackagePrefixToShortenIfPresent(wholeQualifiedExpression: KtDotQualifiedExpression) {
-            val deepestQualifier = wholeQualifiedExpression.qualifiersWithSelf.last()
-            if (deepestQualifier.hasFakeRootPrefix()) {
-                addElementToShorten(deepestQualifier)
-            }
-        }
-
-        private fun addElementToShorten(element: KtDotQualifiedExpression) {
-            qualifiersToShorten.add(element)
-        }
-
-        private fun addElementToImportAndShorten(nameToImport: FqName, element: KtDotQualifiedExpression) {
-            namesToImport.add(nameToImport)
-            qualifiersToShorten.add(element)
-        }
-    }
-
-    private inner class CallsCollectingVisitor(
-        private val namesToImport: MutableList<FqName>,
-        private val qualifiersToShorten: MutableList<KtDotQualifiedExpression>
-    ) : FirVisitorVoid() {
-        override fun visitElement(element: FirElement) {
-            element.acceptChildren(this)
         }
 
         override fun visitResolvedNamedReference(resolvedNamedReference: FirResolvedNamedReference) {
