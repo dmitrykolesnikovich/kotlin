@@ -19,7 +19,6 @@ package org.jetbrains.kotlin.types.checker
 import org.jetbrains.kotlin.types.*
 import org.jetbrains.kotlin.types.model.KotlinTypeMarker
 import org.jetbrains.kotlin.types.model.SimpleTypeMarker
-import org.jetbrains.kotlin.types.model.TypeConstructorMarker
 import org.jetbrains.kotlin.types.refinement.TypeRefinement
 
 open class ClassicTypeCheckerContext(
