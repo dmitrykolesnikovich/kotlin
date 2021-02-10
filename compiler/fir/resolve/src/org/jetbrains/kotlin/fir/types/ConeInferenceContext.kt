@@ -483,4 +483,12 @@ interface ConeInferenceContext : TypeSystemInferenceExtensionContext, ConeTypeCo
         return session.symbolProvider.getClassLikeSymbolByFqName(classId)?.toLookupTag()
             ?: error("Can't find KFunction type")
     }
+
+    override fun createTypeWithAlternativeForIntersectionResult(
+        firstCandidate: KotlinTypeMarker,
+        secondCandidate: KotlinTypeMarker
+    ): KotlinTypeMarker {
+        // TODO
+        return firstCandidate
+    }
 }

@@ -7,23 +7,13 @@ package org.jetbrains.kotlin.fir.resolve.inference
 
 import org.jetbrains.kotlin.fir.*
 import org.jetbrains.kotlin.fir.types.ConeInferenceContext
-import org.jetbrains.kotlin.fir.types.ConeTypeCheckerContext
 import org.jetbrains.kotlin.resolve.calls.inference.components.*
 import org.jetbrains.kotlin.resolve.calls.inference.model.NewConstraintSystemImpl
 import org.jetbrains.kotlin.types.AbstractTypeApproximator
-import org.jetbrains.kotlin.types.model.KotlinTypeMarker
 
 @NoMutableState
 class InferenceComponents(val session: FirSession) : FirSessionComponent {
     val ctx: ConeInferenceContext = object : ConeInferenceContext {
-        override fun createTypeWithAlternativeForIntersectionResult(
-            firstCandidate: KotlinTypeMarker,
-            secondCandidate: KotlinTypeMarker
-        ): KotlinTypeMarker {
-            // TODO
-            return firstCandidate
-        }
-
         override val session: FirSession
             get() = this@InferenceComponents.session
     }

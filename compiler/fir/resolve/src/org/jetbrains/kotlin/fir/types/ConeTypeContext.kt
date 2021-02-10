@@ -580,21 +580,4 @@ class ConeTypeCheckerContext(
 
     override val KotlinTypeMarker.isAllowedTypeVariable: Boolean
         get() = this is ConeKotlinType && this is ConeTypeVariableType
-
-//    override fun newBaseTypeCheckerContext(
-//        errorTypesEqualToAnything: Boolean,
-//        stubTypesEqualToAnything: Boolean
-//    ): AbstractTypeCheckerContext =
-//        if (this.isErrorTypeEqualsToAnything == errorTypesEqualToAnything && this.isStubTypeEqualsToAnything == stubTypesEqualToAnything)
-//            this
-//        else
-//            ConeTypeCheckerContext(errorTypesEqualToAnything, stubTypesEqualToAnything, session)
-
-//    override fun createTypeWithAlternativeForIntersectionResult(
-//        firstCandidate: KotlinTypeMarker,
-//        secondCandidate: KotlinTypeMarker
-//    ): KotlinTypeMarker {
-//        // TODO
-//        return firstCandidate
-//    }
 }

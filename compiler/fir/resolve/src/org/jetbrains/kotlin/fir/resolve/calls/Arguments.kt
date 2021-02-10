@@ -418,7 +418,7 @@ fun FirExpression.isFunctional(
                         AbstractTypeChecker.isSubtypeOf(
                             session.inferenceComponents.ctx.newBaseTypeCheckerContext(
                                 errorTypesEqualToAnything = false,
-                                stubTypesEqualToAnything = false
+                                stubTypesEqualToAnything = true
                             ),
                             invokeSymbol.fir.returnTypeRef.coneType,
                             expectedReturnType,
@@ -438,7 +438,7 @@ fun FirExpression.isFunctional(
                         AbstractTypeChecker.isSubtypeOf(
                             session.inferenceComponents.ctx.newBaseTypeCheckerContext(
                                 errorTypesEqualToAnything = false,
-                                stubTypesEqualToAnything = false
+                                stubTypesEqualToAnything = true
                             ),
                             invokeParameter.returnTypeRef.coneType,
                             expectedParameterType,
