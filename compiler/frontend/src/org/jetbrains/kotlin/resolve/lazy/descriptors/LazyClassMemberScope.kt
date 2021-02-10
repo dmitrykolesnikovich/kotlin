@@ -70,10 +70,21 @@ open class LazyClassMemberScope(
         result.toList()
     }
 
+    private val allClassifierDescriptors = storageManager.createLazyValue {
+        computeDescriptorsFromDeclaredElements(
+            DescriptorKindFilter.CLASSIFIERS,
+            MemberScope.ALL_NAME_FILTER,
+            NoLookupLocation.WHEN_GET_ALL_DESCRIPTORS
+        )
+    }
+
     override fun getContributedDescriptors(
         kindFilter: DescriptorKindFilter,
         nameFilter: (Name) -> Boolean
-    ): Collection<DeclarationDescriptor> = allDescriptors()
+    ): Collection<DeclarationDescriptor> = when (kindFilter) {
+        DescriptorKindFilter.CLASSIFIERS -> allClassifierDescriptors()
+        else -> allDescriptors()
+    }
 
     protected open fun computeExtraDescriptors(location: LookupLocation): Collection<DeclarationDescriptor> {
         val result = ArrayList<DeclarationDescriptor>()
