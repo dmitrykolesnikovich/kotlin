@@ -21,11 +21,6 @@ import org.jetbrains.kotlin.types.model.TypeConstructorMarker
 
 @ThreadSafeMutableState
 class FirCorrespondingSupertypesCache(private val session: FirSession) : FirSessionComponent {
-    private val context
-        get() = session.typeContext.newBaseTypeCheckerContext(
-            errorTypesEqualToAnything = false,
-            stubTypesEqualToAnything = true
-        )
     private val cache = HashMap<ConeClassLikeLookupTag, Map<ConeClassLikeLookupTag, List<ConeClassLikeType>>?>(1000, 0.5f)
 
     fun getCorrespondingSupertypes(
@@ -33,6 +28,11 @@ class FirCorrespondingSupertypesCache(private val session: FirSession) : FirSess
         supertypeConstructor: TypeConstructorMarker
     ): List<ConeClassLikeType>? {
         if (type !is ConeClassLikeType || supertypeConstructor !is ConeClassLikeLookupTag) return null
+
+        val context = session.typeContext.newBaseTypeCheckerContext(
+            errorTypesEqualToAnything = false,
+            stubTypesEqualToAnything = true
+        )
 
         val lookupTag = type.lookupTag
         if (lookupTag == supertypeConstructor) return listOf(captureType(type, context))
