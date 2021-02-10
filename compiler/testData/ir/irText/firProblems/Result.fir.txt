@@ -8,7 +8,7 @@ FILE fqName:<root> fileName:/Result.kt
           <T>: kotlin.Result<T of <root>.foo>
           <R>: T of <root>.foo
           value: GET_VAR 'a: kotlin.Result<T of <root>.foo> declared in <root>.foo' type=kotlin.Result<T of <root>.foo> origin=null
-          f: TYPE_OP type=<root>.FunIFace<T of <root>.bar, R of <root>.bar> origin=SAM_CONVERSION typeOperand=<root>.FunIFace<T of <root>.bar, R of <root>.bar>
+          f: TYPE_OP type=<root>.FunIFace<kotlin.Result<T of <root>.foo>, T of <root>.foo> origin=SAM_CONVERSION typeOperand=<root>.FunIFace<kotlin.Result<T of <root>.foo>, T of <root>.foo>
             FUN_EXPR type=kotlin.Function1<kotlin.Result<T of <root>.foo>, T of <root>.foo> origin=LAMBDA
               FUN LOCAL_FUNCTION_FOR_LAMBDA name:<anonymous> visibility:local modality:FINAL <> (it:kotlin.Result<T of <root>.foo>) returnType:T of <root>.foo
                 VALUE_PARAMETER name:it index:0 type:kotlin.Result<T of <root>.foo>

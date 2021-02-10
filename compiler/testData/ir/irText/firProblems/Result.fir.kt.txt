@@ -2,7 +2,7 @@ fun <T : Any?> foo(a: Result<T>): T {
   return bar<Result<T>, T>(value = a, f = local fun <anonymous>(it: Result<T>): T {
     return it.getOrThrow<T>()
   }
- /*-> FunIFace<T, R> */)
+ /*-> FunIFace<Result<T>, T> */)
 }
 
 fun interface FunIFace<T : Any?, R : Any?> {
