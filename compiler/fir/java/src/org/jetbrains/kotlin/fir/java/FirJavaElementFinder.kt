@@ -242,9 +242,7 @@ private fun ConeClassLikeType.mapToCanonicalNoExpansionString(session: FirSessio
         } + "[]"
     }
 
-    val context = session.typeContext
-
-    with(context) {
+    with(session.typeContext) {
         val typeConstructor = typeConstructor()
         typeConstructor.getPrimitiveType()?.let { return JvmPrimitiveType.get(it).wrapperFqName.asString() }
         typeConstructor.getPrimitiveArrayType()?.let { return JvmPrimitiveType.get(it).javaKeywordName + "[]" }
