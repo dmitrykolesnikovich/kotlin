@@ -16732,6 +16732,11 @@ public class LightAnalysisModeTestGenerated extends AbstractLightAnalysisModeTes
                 runTest("compiler/testData/codegen/box/invokedynamic/sam/genericFunInterfaceWithPrimitive.kt");
             }
 
+            @TestMetadata("nullabilityAssertions.kt")
+            public void testNullabilityAssertions() throws Exception {
+                runTest("compiler/testData/codegen/box/invokedynamic/sam/nullabilityAssertions.kt");
+            }
+
             @TestMetadata("possibleOverrideClash.kt")
             public void testPossibleOverrideClash() throws Exception {
                 runTest("compiler/testData/codegen/box/invokedynamic/sam/possibleOverrideClash.kt");
