@@ -2129,6 +2129,12 @@ public class Fir2IrTextTestGenerated extends AbstractFir2IrTextTest {
         }
 
         @Test
+        @TestMetadata("GenericSamProjectedOut.kt")
+        public void testGenericSamProjectedOut() throws Exception {
+            runTest("compiler/testData/ir/irText/firProblems/GenericSamProjectedOut.kt");
+        }
+
+        @Test
         @TestMetadata("ImplicitReceiverStack.kt")
         public void testImplicitReceiverStack() throws Exception {
             runTest("compiler/testData/ir/irText/firProblems/ImplicitReceiverStack.kt");

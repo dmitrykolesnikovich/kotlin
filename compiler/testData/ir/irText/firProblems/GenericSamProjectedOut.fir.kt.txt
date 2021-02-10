@@ -1,0 +1,28 @@
+fun box(): String {
+  val a: SomeJavaClass<out String> = SomeJavaClass<String>()
+  var result: String = "fail"
+  a.someFunction(hello = local fun <anonymous>(it: String?) {
+    result = it
+  }
+ /*-> Hello<Any?>? */)
+  when {
+    EQEQ(arg0 = result, arg1 = "OK").not() -> return "fail 1: " + result.toString()
+  }
+  result = "fail"
+  a.plus(hello = local fun <anonymous>(it: String?) {
+    result = it
+  }
+ /*-> Hello<Any?>? */)
+  when {
+    EQEQ(arg0 = result, arg1 = "OK").not() -> return "fail 2: " + result.toString()
+  }
+  result = "fail"
+  a.get(hello = local fun <anonymous>(it: String?) {
+    result = it
+  }
+ /*-> Hello<Any?>? */)
+  when {
+    EQEQ(arg0 = result, arg1 = "OK").not() -> return "fail 3: " + result.toString()
+  }
+  return "OK"
+}

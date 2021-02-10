@@ -1,0 +1,28 @@
+fun box(): String {
+  val a: SomeJavaClass<out String> = SomeJavaClass<String>()
+  var result: String = "fail"
+  a /*as SomeJavaClass<A> */.someFunction(hello = local fun <anonymous>(it: @FlexibleNullability String?) {
+    result = it /*!! String */
+  }
+ /*as Function1<@ParameterName(name = "a") @FlexibleNullability A?, Unit> */ /*-> @FlexibleNullability Hello<@FlexibleNullability A?>? */)
+  when {
+    EQEQ(arg0 = result, arg1 = "OK").not() -> return "fail 1: " + result
+  }
+  result = "fail"
+  a /*as SomeJavaClass<A> */.plus(hello = local fun <anonymous>(it: @FlexibleNullability String?) {
+    result = it /*!! String */
+  }
+ /*as Function1<@ParameterName(name = "a") @FlexibleNullability A?, Unit> */ /*-> @FlexibleNullability Hello<@FlexibleNullability A?>? */)
+  when {
+    EQEQ(arg0 = result, arg1 = "OK").not() -> return "fail 2: " + result
+  }
+  result = "fail"
+  a /*as SomeJavaClass<A> */.get(hello = local fun <anonymous>(it: @FlexibleNullability String?) {
+    result = it /*!! String */
+  }
+ /*as Function1<@ParameterName(name = "a") @FlexibleNullability A?, Unit> */ /*-> @FlexibleNullability Hello<@FlexibleNullability A?>? */)
+  when {
+    EQEQ(arg0 = result, arg1 = "OK").not() -> return "fail 3: " + result
+  }
+  return "OK"
+}
