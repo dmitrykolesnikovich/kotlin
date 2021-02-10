@@ -5,13 +5,18 @@
 
 package org.jetbrains.kotlin.descriptors.commonizer.cir.factory
 
+import kotlinx.metadata.Flag
+import kotlinx.metadata.KmTypeParameter
+import kotlinx.metadata.klib.annotations
 import org.jetbrains.kotlin.descriptors.TypeParameterDescriptor
 import org.jetbrains.kotlin.descriptors.commonizer.cir.CirAnnotation
 import org.jetbrains.kotlin.descriptors.commonizer.cir.CirName
 import org.jetbrains.kotlin.descriptors.commonizer.cir.CirType
 import org.jetbrains.kotlin.descriptors.commonizer.cir.CirTypeParameter
+import org.jetbrains.kotlin.descriptors.commonizer.cir.factory.CirTypeFactory.decodeVariance
 import org.jetbrains.kotlin.descriptors.commonizer.cir.impl.CirTypeParameterImpl
 import org.jetbrains.kotlin.descriptors.commonizer.utils.compactMap
+import org.jetbrains.kotlin.descriptors.commonizer.utils.isNullableAny
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.types.typeUtil.isNullableAny
 
@@ -25,6 +30,19 @@ object CirTypeParameterFactory {
             name = CirName.create(source.name),
             isReified = source.isReified,
             variance = source.variance,
+            upperBounds = filteredUpperBounds.compactMap(CirTypeFactory::create)
+        )
+    }
+
+    fun create(source: KmTypeParameter): CirTypeParameter {
+        val upperBounds = source.upperBounds
+        val filteredUpperBounds = if (upperBounds.singleOrNull()?.isNullableAny == true) emptyList() else upperBounds
+
+        return create(
+            annotations = CirAnnotationFactory.createAnnotations(source.flags, source::annotations),
+            name = CirName.create(source.name),
+            isReified = Flag.TypeParameter.IS_REIFIED(source.flags),
+            variance = decodeVariance(source.variance),
             upperBounds = filteredUpperBounds.compactMap(CirTypeFactory::create)
         )
     }

@@ -5,6 +5,10 @@
 
 package org.jetbrains.kotlin.descriptors.commonizer.utils
 
+import kotlinx.metadata.Flag
+import kotlinx.metadata.KmClassifier
+import kotlinx.metadata.KmType
+import kotlinx.metadata.KmVariance
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.ClassifierDescriptor
 import org.jetbrains.kotlin.descriptors.ClassifierDescriptorWithTypeParameters
@@ -41,6 +45,65 @@ internal val ClassifierDescriptorWithTypeParameters.classifierId: CirEntityId
         is ClassDescriptor -> owner.classifierId.createNestedEntityId(CirName.create(name))
         else -> error("Unexpected containing declaration type for $this: ${owner::class}, $owner")
     }
+
+internal inline val KmType.isNullableAny: Boolean
+    get() = (classifier as? KmClassifier.Class)?.name == ANY_CLASS_FULL_NAME && Flag.Type.IS_NULLABLE(flags)
+
+internal val KmType.signature: CirTypeSignature
+    get() {
+        // use of interner saves up to 95% of duplicates
+        return typeSignatureInterner.intern(buildString { buildTypeSignature(this@signature, HashSet()) })
+    }
+
+private fun StringBuilder.buildTypeSignature(type: KmType, exploredTypeParameters: MutableSet<Int>) {
+    when (val classifier = type.classifier) {
+        is KmClassifier.TypeParameter -> {
+            // N.B this is type parameter type
+            append('#').append(classifier.id)
+
+            if (exploredTypeParameters.add(classifier.id)) { // print upper bounds once the first time when type parameter type is met
+                // TODO: how to do it?
+            }
+
+            if (Flag.Type.IS_NULLABLE(type.flags))
+                append('?')
+        }
+        else -> {
+            val abbreviation = type.abbreviatedType ?: type
+
+            val classifierId = when (val abbreviationClassifier = abbreviation.classifier) {
+                is KmClassifier.Class -> abbreviationClassifier.name
+                is KmClassifier.TypeAlias -> abbreviationClassifier.name
+                else -> error("Unexpected classifier type for non-type parameter type: $type")
+            }
+            append(classifierId)
+
+            val arguments = abbreviation.arguments
+            if (arguments.isNotEmpty()) {
+                append('<')
+                arguments.forEachIndexed { index, argument ->
+                    if (index > 0)
+                        append(',')
+
+                    val variance = argument.variance
+                    val argumentType = argument.type
+
+                    if (variance == null || argumentType == null)
+                        append("*")
+                    else {
+                        if (variance != KmVariance.INVARIANT)
+                            append(variance).append(' ')
+                        buildTypeSignature(argumentType, exploredTypeParameters)
+                    }
+                }
+                append('>')
+            }
+
+            if (Flag.Type.IS_NULLABLE(abbreviation.flags))
+                append('?')
+        }
+    }
+}
 
 internal val KotlinType.signature: CirTypeSignature
     get() {
