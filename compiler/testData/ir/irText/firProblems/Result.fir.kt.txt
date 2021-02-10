@@ -1,0 +1,23 @@
+fun <T : Any?> foo(a: Result<T>): T {
+  return bar<Result<T>, T>(value = a, f = local fun <anonymous>(it: Result<T>): T {
+    return it.getOrThrow<T>()
+  }
+ /*-> FunIFace<T, R> */)
+}
+
+fun interface FunIFace<T : Any?, R : Any?> {
+  abstract fun call(ic: T): R
+
+}
+
+fun <T : Any?, R : Any?> bar(value: T, f: FunIFace<T, R>): R {
+  return f.call(ic = value)
+}
+
+fun box(): String {
+  val res: Int = foo<Int>(a = Companion.success<Int>(value = 40)).plus(other = 2)
+  return when {
+    EQEQ(arg0 = res, arg1 = 42).not() -> "FAIL " + res.toString()
+    else -> "OK"
+  }
+}

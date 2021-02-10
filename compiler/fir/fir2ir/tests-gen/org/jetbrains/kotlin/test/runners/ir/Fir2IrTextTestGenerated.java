@@ -2195,6 +2195,12 @@ public class Fir2IrTextTestGenerated extends AbstractFir2IrTextTest {
         }
 
         @Test
+        @TestMetadata("Result.kt")
+        public void testResult() throws Exception {
+            runTest("compiler/testData/ir/irText/firProblems/Result.kt");
+        }
+
+        @Test
         @TestMetadata("SafeLetWithReturn.kt")
         public void testSafeLetWithReturn() throws Exception {
             runTest("compiler/testData/ir/irText/firProblems/SafeLetWithReturn.kt");
