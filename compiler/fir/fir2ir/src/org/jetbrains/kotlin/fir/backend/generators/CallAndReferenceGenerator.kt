@@ -633,6 +633,9 @@ class CallAndReferenceGenerator(
         }
         // Make sure the converted IrType owner indeed has a single abstract method, since FunctionReferenceLowering relies on it.
         if (!samType.isSamType) return this
+        if (samType is IrSimpleType && samType.arguments.any { it is IrStarProjection }) {
+            throw AssertionError("Star projection for SAM type: FIR ${samFirType?.render()}, IR ${samType.render()}")
+        }
         return IrTypeOperatorCallImpl(this.startOffset, this.endOffset, samType, IrTypeOperator.SAM_CONVERSION, samType, this)
     }
 
